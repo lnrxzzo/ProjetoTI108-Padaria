@@ -22,3 +22,7 @@ C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108\EmpresaABC
 C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108\EmpresaABC\PadariaCarmel\obj\Debug\PadariaCarmel.csproj.CoreCompileInputs.cache
 C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108\EmpresaABC\PadariaCarmel\obj\Debug\PadariaCarmel.exe
 C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108\EmpresaABC\PadariaCarmel\obj\Debug\PadariaCarmel.pdb
+C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108\EmpresaABC\PadariaCarmel\obj\Debug\PadariaCarmel.frmMenuPrincipal.resources
+C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108\EmpresaABC\PadariaCarmel\obj\Debug\PadariaCarmel.frmSobre.resources
+C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108\EmpresaABC\PadariaCarmel\obj\Debug\PadariaCarmel.FrmFuncionarios.resources
+C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108\EmpresaABC\PadariaCarmel\obj\Debug\PadariaCarmel.FrmPesquisarFuncionarios.resources
