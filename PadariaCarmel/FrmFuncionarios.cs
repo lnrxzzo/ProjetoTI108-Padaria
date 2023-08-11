@@ -25,6 +25,11 @@ namespace PadariaCarmel
         {
             InitializeComponent();
         }
+        public FrmFuncionarios(string nome)
+        {
+            InitializeComponent();
+            txtNome.Text = nome;
+        }
 
         private void FrmFuncionarios_Load(object sender, EventArgs e)
         {
@@ -159,8 +164,8 @@ namespace PadariaCarmel
             catch (Exception)
             {
                 MessageBox.Show("Insira um CEP válido!", "Mensagem do sistema",
-                MessageBoxButtons.OK, 
-                MessageBoxIcon.Error, 
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error,
                 MessageBoxDefaultButton.Button1);
                 mskCEP.Focus();
                 mskCEP.Text = "";
@@ -180,7 +185,8 @@ namespace PadariaCarmel
         private void btnPesquisar_Click(object sender, EventArgs e)
         {
             FrmPesquisarFuncionarios abrir = new FrmPesquisarFuncionarios();
-            abrir.ShowDialog();
+            abrir.Show();
+            this.Hide();
         }
     }
 }
