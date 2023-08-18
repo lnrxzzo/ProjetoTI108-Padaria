@@ -25,11 +25,15 @@ namespace PadariaCarmel
         public FrmFuncionarios()
         {
             InitializeComponent();
+            desabilitarCampos();
         }
         public FrmFuncionarios(string nome)
         {
             InitializeComponent();
+            desabilitarCampos();
             txtNome.Text = nome;
+            pesquisarNome(txtNome.Text);
+
         }
 
         private void FrmFuncionarios_Load(object sender, EventArgs e)
@@ -37,7 +41,7 @@ namespace PadariaCarmel
             IntPtr hMenu = GetSystemMenu(this.Handle, false);
             int MenuCount = GetMenuItemCount(hMenu) - 1;
             RemoveMenu(hMenu, MenuCount, MF_BYCOMMAND);
-            desabilitarCampos();
+            //desabilitarCampos();
 
         }
 
@@ -54,6 +58,8 @@ namespace PadariaCarmel
         private void btnNovo_Click(object sender, EventArgs e)
         {
             habilitarCampos();
+            pesquisarCodigo();
+
         }
         public void desabilitarCampos()
         {
@@ -75,6 +81,28 @@ namespace PadariaCarmel
             btnAlterar.Enabled = false;
             btnExcluir.Enabled = false;
             btnLimpar.Enabled = false;
+        }
+        public void habilitarBuscarNome()
+        {
+            txtCodigo.Enabled = false;
+            txtNome.Enabled = true;
+            txtEndereço.Enabled = true;
+            txtNumero.Enabled = true;
+            txtBairro.Enabled = true;
+            txtCidade.Enabled = true;
+            txtEmail.Enabled = true;
+
+            mskCEP.Enabled = true;
+            mskCPF.Enabled = true;
+            mskTelefone.Enabled = true;
+
+            cbbEstado.Enabled = true;
+
+            btnCadastrar.Enabled = false;
+            btnAlterar.Enabled = true;
+            btnExcluir.Enabled = true;
+            btnLimpar.Enabled = true;
+            btnNovo.Enabled = false;
         }
 
 
@@ -127,16 +155,34 @@ namespace PadariaCarmel
 
         private void btnCadastrar_Click(object sender, EventArgs e)
         {
+            if (txtNome.Text.Equals("") || txtEmail.Text.Equals("") || txtBairro.Text.Equals("")
+            || txtCidade.Text.Equals("") || txtEndereço.Text.Equals("") || txtNumero.Text.Equals("") || mskTelefone.Text.Equals("(  )      -")
+            || mskCPF.Text.Equals("   .   .   -") || mskCEP.Text.Equals("     -") || cbbEstado.Text.Equals(""))
 
-            CadastrarFuncionarios();
+            {
 
-            MessageBox.Show("Usuário cadastrado com sucesso!", "Messagem do sistema.",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information,
-                MessageBoxDefaultButton.Button1);
+                MessageBox.Show("Preenchimento obrigatório!", "Messagem do sistema.",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+                txtNome.Focus();
 
-            btnNovo.Enabled = true;
-            limparCampos();
+
+
+            }
+            else
+            {
+                CadastrarFuncionarios();
+
+                MessageBox.Show("Cadastrado com sucesso!    ", "Menssagem do sistema",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1);
+
+                desabilitarCampos();
+                btnNovo.Enabled = true;
+                limparCampos();
+            }
         }
 
         //cadastrar funcionarios
@@ -147,21 +193,61 @@ namespace PadariaCarmel
             comm.CommandType = CommandType.Text;
 
             comm.Parameters.Clear();
-            comm.Parameters.Add("@nome" , MySqlDbType.VarChar, 100).Value = txtNome.Text;
-            comm.Parameters.Add("@email" , MySqlDbType.VarChar, 100).Value = txtEmail.Text;
-            comm.Parameters.Add("@telCel" , MySqlDbType.VarChar, 15).Value = mskTelefone.Text;
-            comm.Parameters.Add("@cpf" , MySqlDbType.VarChar, 14).Value = mskCPF.Text;
-            comm.Parameters.Add("@endereco" , MySqlDbType.VarChar, 100).Value = txtEndereço.Text;
-            comm.Parameters.Add("@numero" , MySqlDbType.VarChar, 10).Value = txtNumero.Text;
-            comm.Parameters.Add("@bairro" , MySqlDbType.VarChar, 100).Value = txtBairro.Text;
-            comm.Parameters.Add("@cidade" , MySqlDbType.VarChar, 100).Value = txtCidade.Text;
-            comm.Parameters.Add("@estado" , MySqlDbType.VarChar, 2).Value = cbbEstado.Text;
-            comm.Parameters.Add("@cep" , MySqlDbType.VarChar, 9).Value = mskCEP.Text;
+            comm.Parameters.Add("@nome", MySqlDbType.VarChar, 100).Value = txtNome.Text;
+            comm.Parameters.Add("@email", MySqlDbType.VarChar, 100).Value = txtEmail.Text;
+            comm.Parameters.Add("@telCel", MySqlDbType.VarChar, 15).Value = mskTelefone.Text;
+            comm.Parameters.Add("@cpf", MySqlDbType.VarChar, 14).Value = mskCPF.Text;
+            comm.Parameters.Add("@endereco", MySqlDbType.VarChar, 100).Value = txtEndereço.Text;
+            comm.Parameters.Add("@numero", MySqlDbType.VarChar, 10).Value = txtNumero.Text;
+            comm.Parameters.Add("@bairro", MySqlDbType.VarChar, 100).Value = txtBairro.Text;
+            comm.Parameters.Add("@cidade", MySqlDbType.VarChar, 100).Value = txtCidade.Text;
+            comm.Parameters.Add("@estado", MySqlDbType.VarChar, 2).Value = cbbEstado.Text;
+            comm.Parameters.Add("@cep", MySqlDbType.VarChar, 9).Value = mskCEP.Text;
 
             comm.Connection = Conectar.obterConexao();
             int res = comm.ExecuteNonQuery();
             Conectar.fecharConexao();
         }
+
+        public void AlterarFuncionarios(int codigo)
+        {
+            MySqlCommand comm = new MySqlCommand();
+            comm.CommandText = "update tbFuncionarios set nome = @nome, email = @email, telCel = @telCel, cpf = @cpf, endereco = @endereco, numero = @numero, bairro = @bairro, cidade = @cidade, estado = @estado, cep = @cep where codFunc = " + codigo + ";";
+            comm.CommandType = CommandType.Text;
+
+            comm.Parameters.Clear();
+            comm.Parameters.Add("@nome", MySqlDbType.VarChar, 100).Value = txtNome.Text;
+            comm.Parameters.Add("@email", MySqlDbType.VarChar, 100).Value = txtEmail.Text;
+            comm.Parameters.Add("@telCel", MySqlDbType.VarChar, 15).Value = mskTelefone.Text;
+            comm.Parameters.Add("@cpf", MySqlDbType.VarChar, 14).Value = mskCPF.Text;
+            comm.Parameters.Add("@endereco", MySqlDbType.VarChar, 100).Value = txtEndereço.Text;
+            comm.Parameters.Add("@numero", MySqlDbType.VarChar, 10).Value = txtNumero.Text;
+            comm.Parameters.Add("@bairro", MySqlDbType.VarChar, 100).Value = txtBairro.Text;
+            comm.Parameters.Add("@cidade", MySqlDbType.VarChar, 100).Value = txtCidade.Text;
+            comm.Parameters.Add("@estado", MySqlDbType.VarChar, 2).Value = cbbEstado.Text;
+            comm.Parameters.Add("@cep", MySqlDbType.VarChar, 9).Value = mskCEP.Text;
+
+            comm.Connection = Conectar.obterConexao();
+            int res = comm.ExecuteNonQuery();
+            Conectar.fecharConexao();
+        }
+        public void pesquisarCodigo()
+        {
+            MySqlCommand comm = new MySqlCommand();
+            comm.CommandText = "select codFunc+1  from tbFuncionarios order by codFunc desc";
+            comm.CommandType = CommandType.Text;
+            comm.Connection = Conectar.obterConexao();
+
+            MySqlDataReader DR;
+            DR = comm.ExecuteReader();
+            DR.Read();
+
+            txtCodigo.Text = DR.GetInt32(0).ToString();
+
+            Conectar.fecharConexao();
+        }
+
+
 
         private void btnVoltar_Click(object sender, EventArgs e)
         {
@@ -215,6 +301,51 @@ namespace PadariaCarmel
             FrmPesquisarFuncionarios abrir = new FrmPesquisarFuncionarios();
             abrir.Show();
             this.Hide();
+        }
+
+        private void txtNome_TextChanged(object sender, EventArgs e)
+        {
+            //esquisarNome(txtNome.Text);
+            ;
+        }
+        public void pesquisarNome(string nome)
+        {
+            MySqlCommand comm = new MySqlCommand();
+            comm.CommandText = "select * from tbFuncionarios where nome like '%" + nome + "%';";
+            comm.CommandType = CommandType.Text;
+            comm.Connection = Conectar.obterConexao();
+
+            MySqlDataReader DR;
+            DR = comm.ExecuteReader();
+            DR.Read();
+
+            txtCodigo.Text = DR.GetInt32(0).ToString();
+            txtNome.Text = DR.GetString(1);
+            txtEmail.Text = DR.GetString(2);
+            mskTelefone.Text = DR.GetString(3);
+            mskCPF.Text = DR.GetString(4);
+            txtEndereço.Text = DR.GetString(5);
+            txtNumero.Text = DR.GetString(6);
+            txtBairro.Text = DR.GetString(7);
+            ; txtCidade.Text = DR.GetString(8);
+            cbbEstado.Text = DR.GetString(9);
+            mskCEP.Text = DR.GetString(10);
+            Conectar.fecharConexao();
+
+            habilitarBuscarNome();
+        }
+
+        private void btnAlterar_Click(object sender, EventArgs e)
+        {
+            AlterarFuncionarios(Convert.ToInt32(txtCodigo.Text));
+            MessageBox.Show("Alterado com sucesso!", "Mensagem do sistema!",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information,
+                MessageBoxDefaultButton.Button1);
+
+            desabilitarCampos();
+            btnNovo.Enabled = true;
+            limparCampos();
         }
     }
 }

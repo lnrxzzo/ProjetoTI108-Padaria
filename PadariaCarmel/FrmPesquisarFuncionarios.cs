@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace PadariaCarmel
 {
@@ -43,7 +44,7 @@ namespace PadariaCarmel
             {
                 txtDescricao.Focus();
                 lstPesquisar.Items.Clear();
-                lstPesquisar.Items.Add(txtDescricao.Text);
+                pesquisarCodigo(txtDescricao.Text);
             }
             if (rdbNome.Checked)
             {
@@ -74,10 +75,46 @@ namespace PadariaCarmel
 
         private void lstPesquisar_SelectedIndexChanged(object sender, EventArgs e)
         {
-           string nome = lstPesquisar.SelectedItem.ToString();
+            string nome = lstPesquisar.SelectedItem.ToString();
             FrmFuncionarios abrir = new FrmFuncionarios(nome);
             abrir.Show();
             this.Hide();
+        }
+        public void pesquisarCodigo(string codigo)
+        {
+            MySqlCommand comm = new MySqlCommand();
+            comm.CommandText = "select nome from tbFuncionarios where codFunc = " + codigo + ";";
+            comm.CommandType = CommandType.Text;
+            comm.Connection = Conectar.obterConexao();
+
+            MySqlDataReader DR;
+            DR = comm.ExecuteReader();
+            DR.Read();
+
+            lstPesquisar.Items.Add(DR.GetString(0));
+
+            Conectar.fecharConexao();
+        }
+        public void pesquisarNome(string nome)
+        {
+            MySqlCommand comm = new MySqlCommand();
+            comm.CommandText = "select nome from tbFuncionarios where nome like '%" + nome +"%'";
+            comm.CommandType = CommandType.Text; 
+            comm.Connection = Conectar.obterConexao();
+
+            MySqlDataReader DR;
+            DR = comm.ExecuteReader();
+            DR.Read();
+
+            lstPesquisar.Items.Add(DR.GetString(0));
+
+            Conectar.fecharConexao();
+
+        }
+
+        private void txtDescricao_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

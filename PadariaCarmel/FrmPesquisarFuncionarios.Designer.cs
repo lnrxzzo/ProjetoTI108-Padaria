@@ -61,6 +61,7 @@ namespace PadariaCarmel
             this.txtDescricao.Name = "txtDescricao";
             this.txtDescricao.Size = new System.Drawing.Size(182, 26);
             this.txtDescricao.TabIndex = 3;
+            this.txtDescricao.TextChanged += new System.EventHandler(this.txtDescricao_TextChanged);
             // 
             // lblDescricao
             // 
