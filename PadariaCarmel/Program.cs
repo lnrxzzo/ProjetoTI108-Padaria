@@ -16,7 +16,7 @@ namespace PadariaCarmel
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmFuncionarios());
+            Application.Run(new frmSplash());
         }
     }
 }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using MySql.Data.MySqlClient;
 
 namespace PadariaCarmel
 {
@@ -35,7 +36,10 @@ namespace PadariaCarmel
 
         private void btnEntrar_Click(object sender, EventArgs e)
         {
-            if (txtUsuario.Text.Equals("senac") && txtSenha.Text.Equals("senac"))
+
+            bool result = acessoSistema(txtUsuario.Text, txtSenha.Text);
+
+            if (result)
             {
                 frmMenuPrincipal abrir = new frmMenuPrincipal();
                 abrir.Show();
@@ -82,5 +86,31 @@ namespace PadariaCarmel
             RemoveMenu(hMenu, MenuCount, MF_BYCOMMAND);
 
         }
+
+        private void txtUsuario_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+        public bool acessoSistema(string nome , string senha)
+        {
+            MySqlCommand comm = new MySqlCommand();
+            comm.CommandText = "";
+            comm.CommandType = CommandType.Text;
+
+            comm.Parameters.Clear();
+            comm.Parameters.Add("@nome" , MySqlDbType.VarChar, 50).Value = nome;
+            comm.Parameters.Add("@senha", MySqlDbType.VarChar, 50).Value = senha;
+
+            comm.Connection = Conectar.obterConexao();
+            MySqlDataReader DR;
+            DR = comm.ExecuteReader();
+
+            bool resultado = DR.HasRows;
+
+            Conectar.fecharConexao();
+
+            return resultado;
+        }
+
     }
 }

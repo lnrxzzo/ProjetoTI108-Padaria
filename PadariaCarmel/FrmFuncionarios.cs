@@ -247,6 +247,25 @@ namespace PadariaCarmel
             Conectar.fecharConexao();
         }
 
+        public void excluirFuncionarios(int codigo)
+        {
+            MySqlCommand comm = new MySqlCommand();
+            comm.CommandText = "delete tbFuncionarios where codFunc = @codFunc;";
+            comm.CommandType = CommandType.Text;
+
+            comm.Parameters.Clear();
+            comm.Parameters.Add("@codFunc", MySqlDbType.Int32, 11).Value = codigo;
+
+            comm.Connection = Conectar.obterConexao();
+
+            int res = comm.ExecuteNonQuery();
+
+            Conectar.fecharConexao();
+
+           
+
+        }
+
 
 
         private void btnVoltar_Click(object sender, EventArgs e)
@@ -346,6 +365,30 @@ namespace PadariaCarmel
             desabilitarCampos();
             btnNovo.Enabled = true;
             limparCampos();
+        }
+
+        private void btnExcluir_Click(object sender, EventArgs e)
+        {
+            DialogResult resp = MessageBox.Show("Deseja excluir?",
+                "Mensagem do sistema", MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2);
+
+            if(resp == DialogResult.Yes)
+            {
+               excluirFuncionarios(Convert.ToInt32(txtCodigo.Text));
+               MessageBox.Show("Excluido com sucesso!",
+               "Mensagem do sistema", MessageBoxButtons.OK,
+               MessageBoxIcon.Question,
+               MessageBoxDefaultButton.Button1);
+                limparCampos();
+                desabilitarCampos();
+            }
+            else
+            {
+                txtNome.Focus();
+            }
+
         }
     }
 }

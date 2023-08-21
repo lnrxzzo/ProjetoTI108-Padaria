@@ -134,6 +134,7 @@ namespace PadariaCarmel
             this.btnExcluir.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnExcluir.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnExcluir.UseVisualStyleBackColor = true;
+            this.btnExcluir.Click += new System.EventHandler(this.btnExcluir_Click);
             // 
             // btnAlterar
             // 
@@ -411,7 +412,7 @@ namespace PadariaCarmel
             this.MaximizeBox = false;
             this.Name = "FrmFuncionarios";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Padaria - Funcionários";
+            this.Text = "x";
             this.Load += new System.EventHandler(this.FrmFuncionarios_Load);
             this.pnlCRUD.ResumeLayout(false);
             this.pnlFuncionarios.ResumeLayout(false);
