@@ -37,7 +37,9 @@ namespace PadariaCarmel
 
         private void btnUsuarios_Click(object sender, EventArgs e)
         {
-
+            FrmCadastrarUsuarios abrir = new FrmCadastrarUsuarios();
+            abrir.Show();
+            this.Hide();
         }
 
         private void btnFuncionarios_Click(object sender, EventArgs e)

@@ -66,3 +66,4 @@ C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108-Padaria\Pa
 C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108-Padaria\PadariaCarmel\bin\Debug\System.Numerics.Vectors.xml
 C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108-Padaria\PadariaCarmel\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108-Padaria\PadariaCarmel\obj\Debug\PadariaCarmel.csproj.CopyComplete
+C:\Users\lorenzzo.roliveira\Documents\Visual Studio 2019\ProjetoTI108-Padaria\PadariaCarmel\obj\Debug\PadariaCarmel.FrmCadastrarUsuarios.resources
