@@ -81,7 +81,7 @@ namespace PadariaCarmel
 
             {
 
-                MessageBox.Show("Preenchimento obrigatório!", "Messagem do sistema.",
+                MessageBox.Show("Preenchimento obrigatório!", "Mensagem do sistema.",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error,
                     MessageBoxDefaultButton.Button1);
@@ -92,19 +92,34 @@ namespace PadariaCarmel
             }
             else
             {
-                CadastrarUsuarios();
+                if (txtSenha.Text.Equals(txtContraSenha.Text))
+                {
+                    CadastrarUsuarios(Convert.ToInt32(txtCodFunc.Text));
 
-                MessageBox.Show("Cadastrado com sucesso!    ", "Menssagem do sistema",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information,
-                    MessageBoxDefaultButton.Button1);
+                    MessageBox.Show("Cadastrado com sucesso!    ", "Mensagem do sistema",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information,
+                        MessageBoxDefaultButton.Button1);
 
-                desabilitarCampos();
-                btnNovo.Enabled = true;
-                limparCampos();
+                    desabilitarCampos();
+                    btnNovo.Enabled = true;
+                    limparCampos();
+                }
+                else
+                {
+                    MessageBox.Show("Senha e contra-senha não são compatíveis!!    ", "Mensagem do sistema",
+                       MessageBoxButtons.OK,
+                       MessageBoxIcon.Error,
+                       MessageBoxDefaultButton.Button1);
+                    txtSenha.Clear();
+                    txtContraSenha.Clear();
+                    txtSenha.Focus();
+
+
+                }
             }
         }
-        public void CadastrarUsuarios()
+        public void CadastrarUsuarios(int codFunc)
         {
             MySqlCommand comm = new MySqlCommand();
             comm.CommandText = "insert into tbUsuarios(nome, senha, codFunc)values(@nome, @senha, @codFunc);";
@@ -113,6 +128,7 @@ namespace PadariaCarmel
             comm.Parameters.Clear();
             comm.Parameters.Add("@nome", MySqlDbType.VarChar, 50).Value = txtNome.Text;
             comm.Parameters.Add("@senha", MySqlDbType.VarChar, 14).Value = txtSenha.Text;
+            comm.Parameters.Add("@codFunc", MySqlDbType.Int32, 11).Value = Convert.ToInt32(codFunc);
 
 
             comm.Connection = Conectar.obterConexao();
@@ -139,6 +155,44 @@ namespace PadariaCarmel
             Conectar.fecharConexao();
 
         }
+
+
+        //carregar usuarios
+        public void carregarUsuarios(string nome)
+        {
+            MySqlCommand comm = new MySqlCommand();
+            comm.CommandText = "select usu.nome, usu.senha, func.codFunc from tbFuncionarios as func inner join tbUsuarios as usu on func.codFunc = usu.codFunc where func.nome = '" + nome + "';";
+            comm.CommandType = CommandType.Text;
+
+            comm.Connection = Conectar.obterConexao();
+
+            MySqlDataReader DR;
+            DR = comm.ExecuteReader();
+            DR.Read();
+
+            try
+            {
+                txtNome.Text = DR.GetString(0);
+                txtSenha.Text = DR.GetString(1);
+
+                txtCodFunc.Text = DR.GetInt32(2).ToString();
+
+                Conectar.fecharConexao();
+            }
+            catch (MySqlException)
+            {
+                MessageBox.Show("Funcionário não possui usuário."
+                , "Mensagem do sistema",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1);
+                txtNome.Clear();
+                txtSenha.Clear();
+                txtCodigo.Clear();
+                txtNome.Focus();
+
+            }
+        }
         public void limparCampos()
         {
             txtCodigo.Clear();
@@ -156,6 +210,13 @@ namespace PadariaCarmel
             frmMenuPrincipal abrir = new frmMenuPrincipal();
             abrir.Show();
             this.Hide();
+        }
+
+        private void lstFuncNCad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string nome = lstFuncNCad.SelectedItem.ToString();
+
+            carregarUsuarios(nome);
         }
     }
 }
